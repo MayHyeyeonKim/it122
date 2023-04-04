@@ -34,6 +34,8 @@
 // 즉, 아래의 코드는 data.toString()를 출력하는 것이므로 올바른 결과를 출력할 수 있습니다.
 
 const fs = require("fs");
+const http = require("http"); 
+const querystring = require('node:querystring');
 
 const doneReading = (err, data) => {
   if (err) console.error(err);
@@ -44,3 +46,60 @@ const doneReading = (err, data) => {
 console.log("1 - Program Start");
 fs.readFile('../package.json', doneReading);
 console.log("3 - Program Ended");
+
+// 템플릿 리터럴 Template literal
+// classicfunction();
+
+// function classicfunction() {
+//   console.log('classic version')
+// }
+
+// 클래식 버전:
+// const greeting = "Hello";
+// const name = "John";
+// console.log(greeting + " " + name + "!");
+
+// 템플릿 리터럴 버전:
+// const greeting = "Hello";
+// const name = "John";
+// console.log(`${greeting} ${name}!`);
+
+
+
+// Variable
+// var: 함수 유효 범위를 가지는 변수를 선언하며, 초기화 없이 선언 가능하고, 재할당 가능하다.
+// let: 블록 유효 범위를 가지는 변수를 선언하며, 초기화 없이 선언 가능하고, 재할당 가능하다.
+// const: 블록 유효 범위를 가지는 상수를 선언하며, 반드시 초기화를 해야 하고, 재할당이 불가능하다.
+
+
+// Node.js Web Server
+// const http = require("http"); 
+// http.createServer((req,res) => {
+//   console.log('sending response')
+//     res.writeHead(200, {'Content-Type': 'text/plain'});
+//     res.end('Aloha world');
+// }).listen(process.env.PORT || 3000);
+
+//Web Server Routes
+
+http.createServer((req,res) => {
+    let url = req.url.split("?");
+    let query = querystring.parse(url[1]);
+  console.log(query)
+    let path = url[0].toLowerCase();
+  
+    switch(path) {
+        case '/':
+            res.writeHead(200, {'Content-Type': 'text/plain'});
+            res.end(`Home page for ${query.name}`);
+            break;
+        case '/about':
+            res.writeHead(200, {'Content-Type': 'text/plain'});
+            res.end('About page');
+            break;
+        default:
+            res.writeHead(404, {'Content-Type': 'text/plain'});
+            res.end('Not found');
+            break;
+    }    
+}).listen(process.env.PORT || 3000);
