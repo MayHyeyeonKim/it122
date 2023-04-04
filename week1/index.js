@@ -42,5 +42,5 @@ const doneReading = (err, data) => {
 };
 
 console.log("1 - Program Start");
-fs.readFile('package.json', doneReading);
+fs.readFile('../package.json', doneReading);
 console.log("3 - Program Ended");
