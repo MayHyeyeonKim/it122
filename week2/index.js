@@ -1,9 +1,7 @@
 const express = require('express');
 const app = express();
 const data = require('./data');
-
 app.set('view engine', 'ejs');
-
 
 app.use(express.json()); // JSON 형식의 요청 바디를 파싱
 app.use(express.urlencoded({ extended: false })); // URL-encoded 형식의 요청 바디를 파싱
