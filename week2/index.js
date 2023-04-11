@@ -8,9 +8,7 @@ import express from 'express';
 import { getAll, getItem } from './data.js';
 
 const app = express();
-const data = {
-  getAll, getItem
-};
+const data = {getAll, getItem};
 
 // const express = require('express');
 // const app = express();
