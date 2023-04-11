@@ -1,6 +1,19 @@
-const express = require('express');
+// const express = require('express');
+// const app = express();
+// const data = require('./data');
+
+import http from 'http';
+import querystring from 'querystring';
+import express from 'express';
+import { getAll, getItem } from './data.js';
+
 const app = express();
-const data = require('./data');
+const data = {
+  getAll, getItem
+};
+
+// const express = require('express');
+// const app = express();
 
 app.set('view engine', 'ejs');
 app.use(express.json());

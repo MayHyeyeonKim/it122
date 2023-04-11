@@ -11,7 +11,11 @@ const getAll = () => {
 };
 
 const getItem = (id) => {
-  return items.find((item) => item.id === id);
+  return items.find(item => item.id === Number(id));
 };
 
-module.exports = { getAll, getItem };
+export { getAll, getItem, items };
+
+// module.exports = { getAll, getItem };
+// exports.getAll = getAll;
+// exports.getItem = getItem;
