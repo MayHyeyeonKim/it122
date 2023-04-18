@@ -3,6 +3,24 @@
 <head>
   <title>Home</title>
   <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>Welcome to Maybuck.</h1>
+  <ul>
+    <% data.forEach(function(item) { %>
+      <li>
+        <a href="/detail?id=<%= item.id %>"><%= item.name %></a>
+      </li>
+    <% }); %>
+  </ul>
+
+</body>
+</html>
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Home</title>
+  <link rel="stylesheet" href="/style.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function() {
@@ -35,3 +53,4 @@
   </ul>
 </body>
 </html>
+ -->
