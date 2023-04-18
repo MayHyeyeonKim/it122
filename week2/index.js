@@ -1,17 +1,10 @@
-// const express = require('express');
-// const app = express();
-// const data = require('./data');
-
 import http from 'http';
 import querystring from 'querystring';
 import express from 'express';
-import { getAll, getItem } from './data.js';
+import { getAll, getItem, deleteItem } from './data.js';
 
 const app = express();
-const data = {getAll, getItem};
-
-// const express = require('express');
-// const app = express();
+const data = {getAll, getItem, deleteItem};
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -22,15 +15,15 @@ app.get('/', (req, res) => {
   res.redirect('/home');
 });
 
-app.get('/home', (req, res) => {
-  const items = data.getAll();
+app.get('/home', async (req, res) => {
+  const items = await getAll();
   res.render('home', { data: items });
 });
 
-app.get('/detail', (req, res) => {
+app.get('/detail', async (req, res) => {
   const id = req.query.id;
-  const item = data.getItem(id);
-  
+  const item = await getItem(id);
+
   if (item) {
     res.render('detail', { item: item });
   } else {
@@ -38,7 +31,26 @@ app.get('/detail', (req, res) => {
   }
 });
 
+app.post('/delete', async (req, res) => {
+  const id = req.body.id;
+
+  if (!id) {
+    return res.status(400).send('🚫Error!');
+  }
+
+  const deleted = await deleteItem(id);
+
+  if (deleted) {
+    res.send('👍Deleted successfully');
+  } else {
+    res.status(500).send('😭Failed to delete');
+  }
+});
+
+export default app;
+
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
