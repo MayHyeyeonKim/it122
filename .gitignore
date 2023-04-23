@@ -1,7 +1,12 @@
 # ignore npm packages
+# 
+
 node_modules
 .idea/
 .DS_Store
 .replit
 replit.nix
 credentials.js
+
+package.json
+package-lock.json
