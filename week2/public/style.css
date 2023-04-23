@@ -5,13 +5,14 @@ body {
 }
 
 h1 {
+  text-align: center;
   color: #00704A;
   font-size: 36px;
   margin-bottom: 40px;
 }
 
 h2 {
-  color: #00704A;
+  color: #21b584;
   font-size: 30px;
   margin-bottom: 40px;
 }
@@ -50,4 +51,22 @@ a {
 }
 .backToHome:hover {
   text-decoration: underline;
+}
+form {
+  display: inline-block;
+  float: right;
+}
+button.delete-btn {
+  background-color: transparent;
+  color: #00704A;
+  border: 1px solid #c6c3c3;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.delete-btn:hover {
+  background-color: #00704A;
+  color: #fff;
 }

@@ -10,47 +10,12 @@
     <% data.forEach(function(item) { %>
       <li>
         <a href="/detail?id=<%= item.id %>"><%= item.name %></a>
+        <form action="/delete" method="POST" style="display: inline;">
+      <input type="hidden" name="id" value="<%= item.id %>">
+      <button type="submit" class="delete-btn">Delete</button>
+    </form>
       </li>
     <% }); %>
   </ul>
-
 </body>
 </html>
-<!-- <!DOCTYPE html>
-<html>
-<head>
-  <title>Home</title>
-  <link rel="stylesheet" href="/style.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    $(document).ready(function() {
-      $('.delete-form').submit(function(e) {
-        e.preventDefault(); // 기본 동작 중단
-        const form = $(this);
-        const id = form.find('input[name="id"]').val();
-        $.post('/delete', { id: id }, function(data) {
-          alert(data);
-          window.location.reload(); // 화면 새로고침
-        }).fail(function() {
-          alert('Failed to delete');
-        });
-      });
-    });
-  </script>
-</head>
-<body>
-  <h1>Welcome to Maybuck.</h1>
-  <ul>
-    <% data.forEach(function(item) { %>
-    <li>
-      <a href="/detail?id=<%= item.id %>"><%= item.name %></a>
-      <form class="delete-form" method="POST">
-        <input type="hidden" name="id" value="<%= item.id %>">
-        <button type="submit">Delete</button>
-      </form>
-    </li>
-    <% }); %>
-  </ul>
-</body>
-</html>
- -->
