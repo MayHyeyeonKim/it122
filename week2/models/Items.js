@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import { connectionString } from "../credentials.js";
 const { Schema } = mongoose;
 // import { Maybuck } from './schema';
-
 // For security, connectionString should be in a separate file and excluded from git
 
 mongoose.connect(connectionString, {

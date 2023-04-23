@@ -8,15 +8,6 @@ const items = [
   {id: 5, name: 'Caramel Frappuccino', price: 6.25, calorie: 380}
 ];
 
-// const getAll = () => {
-//   return items;
-// };
-
-// const getItem = (id) => {
-//   return items.find(item => item.id === Number(id));
-// };
-
-
 export const getAll = async () => {
   const items = await Maybuck.find().exec();
   return items;
