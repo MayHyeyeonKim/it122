@@ -4,7 +4,7 @@ import express from 'express';
 import { getAll, getItem, deleteItem } from './data.js';
 
 const app = express();
-const data = {getAll, getItem, deleteItem};
+// const data = {getAll, getItem, deleteItem};
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -29,6 +29,17 @@ app.get('/detail', async (req, res) => {
   } else {
     res.status(404).send('Not Found');
   }
+});
+
+app.get('/maybucks', async (req, res) => {
+  const items = await getAll();
+  res.send(items);
+});
+
+app.get('/maybucks/:id', async (req, res) => {
+  const id = req.params.id;
+  const item = await getItem(id);
+  res.send(item);
 });
 
 app.post('/delete', async (req, res) => {
