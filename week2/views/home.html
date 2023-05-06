@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>React App Demo_Maybucks</title>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+  <h2>Add React for Maybuck</h2>
+  <p>This page using React with no build tooling.</p>
+  <p>React is loaded as a script tag.</p>
+  
+    <!-- We will put our React component inside this div. -->
+<div id="root"></div>
+
+<script type="text/babel">
+    function Home(props) {
+      return (
+        <div>
+          <h1>Welcome to Maybuck.</h1>
+          <ul>
+            {props.data.map(item => (
+              <li key={item.id}>
+                <a href={`/detail?id=${item.id}`}>{item.name}</a>
+                <form action="/delete" method="POST" style={{display: 'inline'}}>
+                  <input type="hidden" name="id" value={item.id} />
+                  <button type="submit" className="delete-btn">Delete</button>
+                </form>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+
+    const items = "<%- items %>";
+    const parsedItems = JSON.parse(items);
+
+    ReactDOM.render(<Home data={parsedItems} />, document.getElementById('root'));
+</script>
+</body>
+</html>

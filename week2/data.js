@@ -1,4 +1,4 @@
-import { Maybuck } from '../week2/models/Items.js';
+import { Maybuck } from './models/Items.js';
 
 const items = [
   {id: 1, name: 'Americano', price: 3.95, calorie: 15},

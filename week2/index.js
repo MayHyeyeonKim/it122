@@ -2,9 +2,9 @@ import http from 'http';
 import querystring from 'querystring';
 import express from 'express';
 import { getAll, getItem, deleteItem } from './data.js';
+import ejs from 'ejs';
 
 const app = express();
-// const data = {getAll, getItem, deleteItem};
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 
 app.get('/home', async (req, res) => {
   const items = await getAll();
-  res.render('home', { data: items });
+  res.render('home', { items: items });
 });
 
 app.get('/detail', async (req, res) => {
@@ -57,8 +57,6 @@ app.post('/delete', async (req, res) => {
     res.status(500).send('😭Failed to delete');
   }
 });
-
-export default app;
 
 const PORT = 3000;
 app.listen(PORT, () => {

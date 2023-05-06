@@ -34,4 +34,3 @@ export const getItem = async (id) => {
   const item = await Maybuck.findOne({ id: id }).exec();
   return item;
 };
-
