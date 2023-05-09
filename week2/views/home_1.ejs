@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Maybucks Home.ejs</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <!-- Don't use this in production: -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <h1>Welcome to Maybucks.</h1>
+  <h1>This is .ejs</h1>
+  <ul>
+  <!-- <% if (Array.isArray(items)) { %> -->
+    <% items.forEach(function(item) { %>
+      <li>
+        <a href="/detail?id=<%= item.id %>"><%= item.name %></a>
+        <form action="/delete" method="POST" style="display: inline;">
+          <input type="hidden" name="id" value="<%= item.id %>">
+          <button type="submit" class="delete-btn">Delete</button>
+        </form>
+      </li>
+    <% }); %>
+  <% } %>
+  </ul>
+  <script type="text/babel">
+    let items = <%- JSON.stringify(items) %>;
+  </script>
+</body>
+</html>

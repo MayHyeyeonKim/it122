@@ -1,3 +1,5 @@
+'use strict';
+
 import http from 'http';
 import querystring from 'querystring';
 import express from 'express';
@@ -17,7 +19,7 @@ app.get('/', (req, res) => {
 
 app.get('/home', async (req, res) => {
   const items = await getAll();
-  res.render('home', { items: items });
+  res.render('home', { items:JSON.stringify(items)});
 });
 
 app.get('/detail', async (req, res) => {

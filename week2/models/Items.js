@@ -26,7 +26,7 @@ const maybucksSchema = new Schema({
 export const Maybuck = mongoose.model('Maybuck', maybucksSchema);
 
 export const getAll = async () => {
-  const items = await Maybuck.find().exec();
+  const items = await Maybuck.find().lean();
   return items;
 };
 
