@@ -1,0 +1,52 @@
+{
+  "type": "module",
+  "name": "week2",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "path-browserify": "^1.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "url": "^0.11.0",
+    "webpack": "^5.68.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "NODE_OPTIONS=--experimental-vm-modules react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "postbuild": "webpack"
+  },
+  "resolve": {
+    "fallback": {
+      "fs": false,
+      "path": "path-browserify",
+      "stream": "stream-browserify",
+      "util": false
+    }
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "resolutions": {
+    "**/webpack-dev-server": "4.5.0"
+  },
+  "devDependencies": {
+    "stream-http": "^3.2.0",
+    "webpack": "^5.68.0"
+  }
+}
