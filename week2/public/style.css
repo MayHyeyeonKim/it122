@@ -1,5 +1,94 @@
+/* detail */
+
+#detail_info {
+  font-size: 16px;
+  color: #333;
+  margin-top: 20px;
+}
+
+div#currentdetail {
+  background-color: #f0f0f0; /* 배경색 */
+  border: 1px solid #ccc; /* 테두리 */
+  padding: 1rem; /* 내부 여백 */
+  margin-top: 1rem;
+}
+
+/* home */
+
+hr {
+  width: 75%;
+  margin-bottom: 60px;
+}
+
+p {
+  font-size: 50px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin: 20px 0;
+}
+
+div#detailchange {
+  background-color: #f0f0f0; /* 배경색 */
+  border: 1px solid #ccc; /* 테두리 */
+  padding: 1rem; /* 내부 여백 */
+  margin-top: 1rem;
+}
+
+form {
+
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+input,
+textarea {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+}
+
+input[type="number"] {
+  width: 6rem;
+}
+
+button {
+  display: block;
+  margin: 0.6rem auto;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  background-color: #00704A;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100px;
+}
+
+button:hover {
+  background-color: #86df86;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+
+
+
+/* all */
 body {
-  background-color: #f8f8f8;
+  background-color: #e6efea;
   font-family: sans-serif;
   padding: 40px;
 }
@@ -7,13 +96,16 @@ body {
 h1 {
   text-align: center;
   color: #00704A;
-  font-size: 36px;
+  font-size: 32px;
   margin-bottom: 40px;
 }
 
 h2 {
+  display: flex;
+  justify-content: center;
   color: #21b584;
   font-size: 30px;
+  margin-top: 20px;
   margin-bottom: 40px;
 }
 
@@ -52,10 +144,10 @@ a {
 .backToHome:hover {
   text-decoration: underline;
 }
-form {
+/* form {
   display: inline-block;
   float: right;
-}
+} */
 button.delete-btn {
   background-color: transparent;
   color: #00704A;

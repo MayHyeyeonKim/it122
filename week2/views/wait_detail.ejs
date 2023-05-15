@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Maybucks Detail Page</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  function Detail(props) {
+    return (
+      <div>
+        <h1>{props.item.name}</h1>
+        <img src={props.item.image} alt={props.item.name} />
+        <p id="detail_info">{props.item.description}</p>
+        <p id="detail_info">Price: {props.item.price}</p>
+        <p id="detail_info">Ingredients: {props.item.ingredients}</p>
+        <p id="detail_info">Availability: {props.item.available ? "In stock" : "Out of stock"}</p>
+      </div>
+    );
+  }
+  
+  const container = document.createElement('div');
+  document.body.appendChild(container);
+  ReactDOM.render(<Detail item={<%- item %>}/>, container);
+</script>
+
+</body>
+</html>

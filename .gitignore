@@ -8,5 +8,3 @@ node_modules
 replit.nix
 credentials.js
 
-package.json
-package-lock.json

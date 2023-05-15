@@ -31,6 +31,6 @@ export const getAll = async () => {
 };
 
 export const getItem = async (id) => {
-  const item = await Maybuck.findOne({ id: id }).exec();
+  const item = await Maybuck.findOne({ id: id }).lean();
   return item;
 };

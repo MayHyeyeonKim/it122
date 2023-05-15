@@ -1,4 +1,6 @@
 'use strict';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 import http from 'http';
 import querystring from 'querystring';
@@ -19,15 +21,15 @@ app.get('/', (req, res) => {
 
 app.get('/home', async (req, res) => {
   const items = await getAll();
-  res.render('home', { items:JSON.stringify(items)});
+  res.render('home', { items:JSON.stringify(items) });
 });
 
 app.get('/detail', async (req, res) => {
   const id = req.query.id;
   const item = await getItem(id);
-
+  
   if (item) {
-    res.render('detail', { item: item });
+    res.render('detail', { items:JSON.stringify(items) });
   } else {
     res.status(404).send('Not Found');
   }
