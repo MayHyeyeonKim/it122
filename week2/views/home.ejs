@@ -17,8 +17,9 @@
 function Home(props) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
 
-  function handleItemClick(itemId) {
-    window.location.href = `/detail?id=${item.id}`;
+  const handleItemClick = (itemId) => {
+    console.log(itemId);
+    // window.location.href = `/detail?id=${item.id}`;
   }
 
   function handleClearClick() {
@@ -35,10 +36,8 @@ function Home(props) {
       <h1>Maybucks Inventory Management System</h1>
       <ul>
         {props.data.map(item => (
-          <li key={item.id}>
-            <a href={`/detail?id=${item.id}`} onClick={() => handleItemClick(item.id)}>
+          <li key={item.id} onClick={() => {handleItemClick(item.id)}}>
               {item.name}
-            </a>
           </li>
         ))}
       </ul>

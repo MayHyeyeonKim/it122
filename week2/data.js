@@ -43,3 +43,35 @@ export const handleDelete = async (id) => {
     setError('Failed to delete item');
   }
 };
+
+export const updateItem = async (id, name, price) => {
+  try {
+    const updatedItem = await Maybuck.findOneAndUpdate(
+      { id: id },
+      { name: name, price: price },
+      { new: true }
+    ).exec();
+    
+    if (updatedItem) {
+      return updatedItem;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+};
+
+export const addItem = async (id, name, price, calorie) => {
+  try {
+    const newItem = new Maybuck({ id: id, name: name, price: price, calorie: calorie });
+    const savedItem = await newItem.save();
+    return savedItem;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+};
+
+    

@@ -1,35 +1,33 @@
-'use strict';
-import React from 'react';
-import ReactDOM from 'react-dom';
+'use strict'
 
-import http from 'http';
-import querystring from 'querystring';
 import express from 'express';
-import { getAll, getItem, deleteItem } from './data.js';
-import ejs from 'ejs';
+import { getAll, getItem, deleteItem, addItem, updateItem } from './data.js';
 
 const app = express();
 
-app.set('view engine', 'ejs');
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+import ejs from 'ejs';
+
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.redirect('/home');
-});
+import cors from 'cors';
+app.use('/api', cors());
 
-app.get('/home', async (req, res) => {
+app.set('view engine', 'ejs');
+
+app.get('/', async (req, res) => {
   const items = await getAll();
-  res.render('home', { items:JSON.stringify(items) });
+  res.render('home', { items: JSON.stringify(items) });
 });
+
 
 app.get('/detail', async (req, res) => {
   const id = req.query.id;
   const item = await getItem(id);
-  
+
   if (item) {
-    res.render('detail', { items:JSON.stringify(items) });
+    res.render('detail', { item: item });
   } else {
     res.status(404).send('Not Found');
   }
@@ -60,6 +58,45 @@ app.post('/delete', async (req, res) => {
   } else {
     res.status(500).send('😭Failed to delete');
   }
+});
+
+app.post('/maybucks', async (req, res) => {
+  const { id, name, price } = req.body;
+
+  if (!id || !name || !price) {
+    return res.status(400).send('🚫Error! Invalid data');
+  }
+
+  const added = await addItem(id, name, price);
+
+  if (added) {
+    res.send('👍Item added successfully');
+  } else {
+    res.status(500).send('😭Failed to add item');
+  }
+});
+
+app.post('/maybucks/:id', async (req, res) => {
+  const { id, name, price } = req.body;
+
+  if (!id || !name || !price) {
+    return res.status(400).send('🚫Error! Invalid data');
+  }
+
+  const updated = await updateItem(id, name, price);
+
+  if (updated) {
+    console.log(updated);
+    res.send('👍Item added/updated successfully');
+  } else {
+    res.status(500).send('😭Failed to add/update item');
+  }
+});
+
+app.use((req, res) => {
+  res.type('text/plain');
+  res.status(404);
+  res.send('404 - Not found');
 });
 
 const PORT = 3000;

@@ -1,113 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Maybucks Inventory Management System - Item Detail</title>
+  <head>
+    <title><%= item.key %></title>
     <link rel="stylesheet" href="/style.css">
-    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-</head>
+  </head>
+  <body>
+    <h1>Detail for your beverage</h1>
+    <h1><%= item.key %></h1>
+    <p><%= item.description %></p>
 
-<body>
-  <div id="root"></div>
-
-  <script type="text/babel">
-
-    function Detail(props) {
-      const { items } = props;
-
-      const [editedItem, setEditedItem] = React.useState({
-        name: props.item.name,
-        description: props.item.description,
-        price: props.item.price,
-        calorie: props.item.calorie,
-      });
-
-      function handleInputChange(event) {
-        const { name, value } = event.target;
-        setEditedItem(prevState => ({
-          ...prevState,
-          [name]: value,
-        }));
-      }
-
-      function handleSaveClick() {
-        props.onEditSave(editedItem);
-      }
-
-      function handleClearClick() {
-        setEditedItem({
-          name: props.item.name,
-          description: props.item.description,
-          price: props.item.price,
-          calorie: props.item.calorie,
-        });
-        props.onClearClick();
-      }
-
-      return (
-      <>
-        <div id="currentdetail">
-          <h1>{props.item.name}</h1>
-          <img src={props.item.image} alt={props.item.name} />
-          <p id="detail_info">{props.item.description}</p>
-          <p id="detail_info">Price: {props.item.price}</p>
-          <p id="detail_info">Ingredients: {props.item.ingredients}</p>
-          <p id="detail_info">Availability: {props.item.available ? "In stock" : "Out of stock"}</p>
-        </div>
-        
-        <div id="detailchange">
-          <p>Update inventory</p>
-          <hr />
-          <h2>{props.item.name}</h2>
-          <form>
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              name="name"
-              value={editedItem.name}
-              onChange={handleInputChange}
-            />
+    <h2><%= item.name %></h2>
+    <p>Price: $<%= item.price %></p>
+    <p>Calories: <%= item.calorie %>kcal</p>
     
-            <label htmlFor="description">Description:</label>
-            <textarea
-              name="description"
-              value={editedItem.description}
-              onChange={handleInputChange}
-              placeholder="Please specify the stock quantity or any special notes."
-            />
+    <a href="/"class="backToHome"> back to Home</a>
     
-            <label htmlFor="price">Price:</label>
-            <input
-              type="number"
-              name="price"
-              value={editedItem.price}
-              onChange={handleInputChange}
-            />
-    
-            <label htmlFor="calorie">Calorie:</label>
-            <input
-              type="number"
-              name="calorie"
-              value={editedItem.calorie}
-              onChange={handleInputChange}
-            />
-
-            <button type="button" onClick={handleSaveClick}>
-              Save
-            </button>
-            <button type="button" onClick={handleClearClick}>
-              Clear
-            </button>
-          </form>
-        </div>
-      </>
-      );
-    }
-
-  const container = document.createElement('div');
-  document.body.appendChild(container);
-  ReactDOM.render(<Detail item={<%- item %>}/>, container);
-  </script>
-</body>
+  </body>
 </html>
