@@ -1,20 +1,22 @@
-'use strict'
+
 
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { getAll, getItem, deleteItem, addItem, updateItem } from './data.js';
+import cors from 'cors';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-
-import ejs from 'ejs';
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
-import cors from 'cors';
 app.use('/api', cors());
-
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 app.get('/', async (req, res) => {
   const items = await getAll();
@@ -35,7 +37,13 @@ app.get('/detail', async (req, res) => {
 
 app.get('/maybucks', async (req, res) => {
   const items = await getAll();
-  res.send(items);
+  const parsed = items.map(item => {
+    return {
+      ...item,
+      price: Number(item.price)
+    }
+  })
+  res.send(parsed);
 });
 
 app.get('/maybucks/:id', async (req, res) => {
@@ -44,8 +52,8 @@ app.get('/maybucks/:id', async (req, res) => {
   res.send(item);
 });
 
-app.post('/delete', async (req, res) => {
-  const id = req.body.id;
+app.delete('/maybucks/:id', async (req, res) => {
+  const id = req.params.id;
 
   if (!id) {
     return res.status(400).send('🚫Error!');
@@ -77,16 +85,15 @@ app.post('/maybucks', async (req, res) => {
 });
 
 app.post('/maybucks/:id', async (req, res) => {
-  const { id, name, price } = req.body;
+  const { id, name, price, calorie } = req.body;
 
   if (!id || !name || !price) {
     return res.status(400).send('🚫Error! Invalid data');
   }
 
-  const updated = await updateItem(id, name, price);
+  const updated = await updateItem(id, name, price, calorie);
 
   if (updated) {
-    console.log(updated);
     res.send('👍Item added/updated successfully');
   } else {
     res.status(500).send('😭Failed to add/update item');
@@ -99,7 +106,7 @@ app.use((req, res) => {
   res.send('404 - Not found');
 });
 
-const PORT = 3000;
+const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

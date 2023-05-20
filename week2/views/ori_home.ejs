@@ -1,0 +1,166 @@
+<!-- 불필요한 파일 -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>React App Demo_Maybucks</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    // Home Component
+    function Home(props) {
+      const [selectedItemId, setSelectedItemId] = React.useState(null);
+
+      function handleClearClick() {
+        setSelectedItemId(null);
+      }
+
+      function handleEditSave(newItem) {
+        // update the application state with the edited item
+        // ...
+      }
+
+      // const handleItemClick = (itemId) => {
+      //   console.log(itemId);
+      //   // window.location.href = `/detail?id=${item.id}`;
+      // };
+      const handleItemClick = (event) => {
+        const itemName = event.target.text
+        const itemId = props.data.find(item => item.name === itemName);
+        if (itemId) {
+          setSelectedItemId(itemId.id);
+        }
+      };
+
+      return (
+        <div>
+          <h1>Maybucks Inventory Management System</h1>
+          <ul>
+            {props.data.map(item => (
+              <li 
+                key={item.id}
+                onClick={() => handleItemClick(item.id)}
+              >
+                {item.name}
+              </li>
+            ))}
+          </ul>
+      
+          {selectedItemId && (
+            <Detail
+              item={props.data.find(item => item.id === selectedItemId)}
+              onEditSave={handleEditSave}
+              onClearClick={handleClearClick}
+            />
+          )}
+        </div>
+      );
+    }
+  
+    // Detail component
+    function Detail(props) {
+      const [editedItem, setEditedItem] = React.useState({
+        name: props.item.name,
+        description: props.item.description,
+        price: props.item.price,
+        calorie: props.item.calorie,
+      });
+
+      function handleInputChange(event) {
+        const { name, value } = event.target;
+        setEditedItem(prevState => ({
+          ...prevState,
+          [name]: value,
+        }));
+      }
+
+      function handleSaveClick() {
+        props.onEditSave(editedItem);
+      }
+
+      function handleClearClick() {
+        setEditedItem({
+          name: props.item.name,
+          description: props.item.description,
+          price: props.item.price,
+          calorie: props.item.calorie,
+        });
+        props.onClearClick();
+      }
+
+      return (
+      <>
+        <div id="currentdetail">
+          <h1>{props.item.name}</h1>
+          <img src={props.item.image} alt={props.item.name} />
+          <p id="detail_info">{props.item.description}</p>
+          <p id="detail_info">Price: {props.item.price}</p>
+          <p id="detail_info">Ingredients: {props.item.ingredients}</p>
+          <p id="detail_info">Availability: {props.item.available ? "In stock" : "Out of stock"}</p>
+        </div>
+        
+        <div id="detailchange">
+          <p>Update inventory</p>
+          <hr />
+          <h2>{props.item.name}</h2>
+          <form>
+            <label htmlFor="name">Name:</label>
+            <input
+              type="text"
+              name="name"
+              value={editedItem.name}
+              onChange={handleInputChange}
+            />
+    
+            <label htmlFor="description">Description:</label>
+            <textarea
+              name="description"
+              value={editedItem.description}
+              onChange={handleInputChange}
+              placeholder="Please specify the stock quantity or any special notes."
+            />
+    
+            <label htmlFor="price">Price:</label>
+            <input
+              type="number"
+              name="price"
+              value={editedItem.price}
+              onChange={handleInputChange}
+            />
+    
+            <label htmlFor="calorie">Calorie:</label>
+            <input
+              type="number"
+              name="calorie"
+              value={editedItem.calorie}
+              onChange={handleInputChange}
+            />
+
+            <button type="button" onClick={handleSaveClick}>
+              Save
+            </button>
+            <button type="button" onClick={handleClearClick}>
+              Clear
+            </button>
+          </form>
+        </div>
+      </>
+      );
+    }
+
+  
+
+
+    const items = <%- items %>;
+    ReactDOM.render(<Home data={items} />, document.getElementById('root'));
+
+</script>
+</body>
+</html>

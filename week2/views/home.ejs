@@ -14,12 +14,19 @@
 <script type="text/babel">
 
 //Home Component 
-function Home(props) {
+function Home() {
+  const [items, setItems] = React.useState([]);
   const [selectedItemId, setSelectedItemId] = React.useState(null);
 
+  React.useEffect(()=> {
+    fetch('/maybucks').then(res => res.json()).then(data => {
+      setItems(data)
+    })
+  }, []);
+
+
   const handleItemClick = (itemId) => {
-    console.log(itemId);
-    // window.location.href = `/detail?id=${item.id}`;
+    setSelectedItemId(itemId);
   }
 
   function handleClearClick() {
@@ -27,129 +34,173 @@ function Home(props) {
   }
 
   function handleEditSave(newItem) {
-    // update the application state with the edited item
-    // ...
+    fetch(`/maybucks/${newItem.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...newItem, calorie: Number(newItem.calorie), price: Number(newItem.price)}),
+    }).then(res => {
+      if (res.ok) {
+        alert("Success!")
+      } else {
+        alert('Failed to update an item.')
+      }
+    })
+  }
+
+  function handleDelete(item) {
+    console.log("run")
+    fetch(`/maybucks/${item.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(res => {
+      if (res.ok) {
+        alert("Success!")
+      } else {
+        alert('Failed to delete an item.')
+      }
+    })
+  }
+
+
+  if (items.length === 0) {
+    return 'Loading items'
   }
 
   return (
     <div>
       <h1>Maybucks Inventory Management System</h1>
       <ul>
-        {props.data.map(item => (
-          <li key={item.id} onClick={() => {handleItemClick(item.id)}}>
+        {items.map(item => (
+          <>
+            <li key={item.id} onClick={() => {handleItemClick(item.id)}}>
               {item.name}
-          </li>
+            </li>
+            {selectedItemId===item.id && <Detail item={item} setItems={setItems} onEditSave={handleEditSave} onDelete={handleDelete} />}
+          </>
         ))}
       </ul>
-
-        {props.item && (
-          <Detail
-            item={JSON.parse(props.item)}
-            onEditSave={handleEditSave}
-            onClearClick={handleClearClick}
-          />
-        )}
     </div>
   );
 }
 
 
 // Detail component
-function Detail(props) {
-      const { items } = props;
+function Detail({ item, setItems, onEditSave, onDelete }) {
+  const [currentItem, setCurrentItem] = React.useState(null);
+  
+  React.useEffect(()=> {
+    fetch(`/maybucks/${item.id}`).then(res => res.json()).then((data)=> {
+      setCurrentItem(data);
+    })
+  }, [])
 
-      const [editedItem, setEditedItem] = React.useState({
-        name: props.item.name,
-        description: props.item.description,
-        price: props.item.price,
-        calorie: props.item.calorie,
-      });
 
-      function handleInputChange(event) {
-        const { name, value } = event.target;
-        setEditedItem(prevState => ({
-          ...prevState,
-          [name]: value,
-        }));
+  function handleInputChange(event) {
+    const { name, value } = event.target;
+    setCurrentItem(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  }
+
+  function handleSaveClick() {
+    setItems(prevState => {
+      const newState = prevState.map(item => {
+        if (item.id === currentItem.id) {
+          return {...currentItem, id: item.id};
+        }
+        return item;
+      })
+      return newState;
+    });
+    onEditSave(currentItem);
+  }
+
+  function handleDeleteClick() {
+    setItems(prevState => {
+      const newState = prevState.filter(item => {
+        return item.id !== currentItem.id;
+      })
+      return newState
+    });
+    onDelete(currentItem);
+  }
+
+  function handleClearClick() {
+    setCurrentItem(prev=> {
+      return {
+        ...prev,
+        name: '',
+        price: '',
+        calorie: '',
       }
+    })
+  }
 
-      function handleSaveClick() {
-        props.onEditSave(editedItem);
-      }
+  if (!currentItem) {
+    return null
+  }
 
-      function handleClearClick() {
-        setEditedItem({
-          name: props.item.name,
-          description: props.item.description,
-          price: props.item.price,
-          calorie: props.item.calorie,
-        });
-        props.onClearClick();
-      }
-
-      return (
-      <>
-        <div id="currentdetail">
-          <h1>{props.item.name}</h1>
-          <img src={props.item.image} alt={props.item.name} />
-          <p id="detail_info">{props.item.description}</p>
-          <p id="detail_info">Price: {props.item.price}</p>
-          <p id="detail_info">Ingredients: {props.item.ingredients}</p>
-          <p id="detail_info">Availability: {props.item.available ? "In stock" : "Out of stock"}</p>
-        </div>
-        
-        <div id="detailchange">
-          <p>Update inventory</p>
-          <hr />
-          <h2>{props.item.name}</h2>
-          <form>
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              name="name"
-              value={editedItem.name}
-              onChange={handleInputChange}
-            />
+  return (
+  <>
+    <div id="currentdetail">
+      <h1>{item.name}</h1>
+      <p id="detail_info">Price: {item.price}</p>
+      <p id="detail_info">Ingredients: {item.ingredients}</p>
+      <p id="detail_info">Availability: {item.available ? "In stock" : "Out of stock"}</p>
+    </div>
     
-            <label htmlFor="description">Description:</label>
-            <textarea
-              name="description"
-              value={editedItem.description}
-              onChange={handleInputChange}
-              placeholder="Please specify the stock quantity or any special notes."
-            />
-    
-            <label htmlFor="price">Price:</label>
-            <input
-              type="number"
-              name="price"
-              value={editedItem.price}
-              onChange={handleInputChange}
-            />
-    
-            <label htmlFor="calorie">Calorie:</label>
-            <input
-              type="number"
-              name="calorie"
-              value={editedItem.calorie}
-              onChange={handleInputChange}
-            />
+    <div id="detailchange">
+      <p>Update inventory</p>
+      <hr />
+      <h2>{item.name}</h2>
+      <form>
+        <label htmlFor="name">Name:</label>
+        <input
+          type="text"
+          name="name"
+          value={currentItem.name}
+          onChange={handleInputChange}
+        />
 
-            <button type="button" onClick={handleSaveClick}>
-              Save
-            </button>
-            <button type="button" onClick={handleClearClick}>
-              Clear
-            </button>
-          </form>
-        </div>
-      </>
-      );
-    }
+        <label htmlFor="price">Price:</label>
+        <input
+          type="number"
+          name="price"
+          value={currentItem.price}
+          onChange={handleInputChange}
+        />
 
+        <label htmlFor="calorie">Calorie:</label>
+        <input
+          type="number"
+          name="calorie"
+          value={currentItem.calorie}
+          onChange={handleInputChange}
+        />
 
-    const items = <%- items %>;
-    ReactDOM.render(<Home data={items} />, document.getElementById('root'));
+        <button type="button" onClick={handleSaveClick}>
+          Save
+        </button>
+
+        <button type="button" onClick={handleDeleteClick}>
+          Delete
+        </button>
+
+        <button type="button" onClick={handleClearClick}>
+          Clear
+        </button>
+      </form>
+    </div>
+  </>
+  );
+}
+
+ReactDOM.render(<Home />, document.getElementById('root'));
 
 </script>
 </body>
