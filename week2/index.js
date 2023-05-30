@@ -1,5 +1,3 @@
-
-
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -22,7 +20,6 @@ app.get('/', async (req, res) => {
   const items = await getAll();
   res.render('home', { items: JSON.stringify(items) });
 });
-
 
 app.get('/detail', async (req, res) => {
   const id = req.query.id;
